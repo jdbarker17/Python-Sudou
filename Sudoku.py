@@ -36,16 +36,16 @@ def place(board,pos,val):
 	board[pos[0]][pos[1]] = val
 
 def check_position(board, pos, val):
-		print("We're in the check method")
+		#print("We're in the check method")
 		#Check Rows
 		for ii in range(0,len(board)):
 			#if board[pos[0]][ii] == board[pos[0]][pos[1]] & ii != pos[0]:
 			if board[pos[0]][ii] == val:
 			#if val == board[pos[0]][pos[1]] & ii != pos[1]:
-				print("Invalid solution - Row")
-				print( "value = ", val)
-				print("position =", pos)
-				print("board value = ", board[pos[0]][ii])
+				#print("Invalid solution - Row")
+				#print( "value = ", val)
+				#print("position =", pos)
+				#print("board value = ", board[pos[0]][ii])
 
 				return -1 
 
@@ -54,10 +54,10 @@ def check_position(board, pos, val):
 			#if board[pos[0]][ii] == board[pos[0]][pos[1]] & ii != pos[0]:
 			if board[ii][pos[1]] == val:
 			#if val == board[pos[0]][pos[1]] & ii != pos[1]:
-				print("Invalid solution - Column")
-				print( "value = ", val)
-				print("position =", pos)
-				print("board value = ", board[ii][pos[1]])
+				#print("Invalid solution - Column")
+				#print( "value = ", val)
+				#print("position =", pos)
+				#print("board value = ", board[ii][pos[1]])
 				return -1 
 
 		#Square Checks
@@ -67,8 +67,8 @@ def check_position(board, pos, val):
 			for ii in range(0,3):
 				for jj in range(0,3):
 					if board[ii][jj] ==  val:
-						print("Invalid solution - Box")
-						print( "value = ", val)
+						#print("Invalid solution - Box")
+						#print( "value = ", val)
 						#print(board[ii][jj])
 						return -1 
 
@@ -78,8 +78,8 @@ def check_position(board, pos, val):
 			for ii in range(0,3):
 				for jj in range(3,6):
 					if board[ii][jj] ==  val:
-						print("Invalid solution - Box")
-						print( "value = ", val)
+						#print("Invalid solution - Box")
+						#print( "value = ", val)
 						#print(board[ii][jj])
 						return -1 
 
@@ -88,8 +88,8 @@ def check_position(board, pos, val):
 			for ii in range(0,3):
 				for jj in range(6,9):
 					if board[ii][jj] ==  val:
-						print("Invalid solution - Box")
-						print( "value = ", val)
+						#print("Invalid solution - Box")
+						#print( "value = ", val)
 						#print(board[ii][jj])
 						return -1 
 
@@ -98,8 +98,8 @@ def check_position(board, pos, val):
 			for ii in range(3,6):
 				for jj in range(0,3):
 					if board[ii][jj] ==  val:
-						print("Invalid solution - Box")
-						print( "value = ", val)
+						#print("Invalid solution - Box")
+						#print( "value = ", val)
 						#print(board[ii][jj])
 						return -1 
 
@@ -108,8 +108,8 @@ def check_position(board, pos, val):
 			for ii in range(3,6):
 				for jj in range(3,6):
 					if board[ii][jj] ==  val:
-						print("Invalid solution - Box")
-						print( "value = ", val)
+						#print("Invalid solution - Box")
+						#print( "value = ", val)
 						#print(board[ii][jj])
 						return -1 
 
@@ -118,8 +118,8 @@ def check_position(board, pos, val):
 			for ii in range(3,6):
 				for jj in range(6,9):
 					if board[ii][jj] ==  val:
-						print("Invalid solution - Box")
-						print( "value = ", val)
+						#print("Invalid solution - Box")
+						#print( "value = ", val)
 						#print(board[ii][jj])
 						return -1 
 		
@@ -128,10 +128,10 @@ def check_position(board, pos, val):
 			for ii in range(6,9):
 				for jj in range(0,3):
 					if board[ii][jj] ==  val:
-						print("Invalid solution - Box")
-						print( "value = ", val)
-						print("position =", pos)
-						print("board value = ", board[ii][jj])
+						#print("Invalid solution - Box")
+						#print( "value = ", val)
+						#print("position =", pos)
+						#print("board value = ", board[ii][jj])
 						return -1 
 
 		#Square 8
@@ -139,22 +139,21 @@ def check_position(board, pos, val):
 			for ii in range(6,9):
 				for jj in range(3,6):
 					if board[ii][jj] ==  val:
-						print("Invalid solution - Box")
-						print( "value = ", val)
+						#print("Invalid solution - Box")
+						#print( "value = ", val)
 						return -1 
 
 		#Square 9
 		if pos[0] > 5 and pos[1] > 5:
-			print("We're in square 9 check")
+			
 			for ii in range(6,9):
 				for jj in range(6,9):
 					if board[ii][jj] ==  val:
-						print("Invalid solution - Box")
-						print( "value = ", val)
+						#print("Invalid solution - Box")
+						#print( "value = ", val)
 						return -1 
 		
-		#else:
-		print("Valid Option")
+		
 		return 1
 
 def find_empty(sudokuBoard):
@@ -172,26 +171,16 @@ def solve(sudokuBoard, zero_locations):
 		zero_loc = find_empty(sudokuBoard)
 		#if 
 		for number in range(1,10):
-			if number == 6 and zero_loc[0] == 6 and zero_loc[1] == 6:
-				print("*****************************************************************************")
-				print("*****************************************************************************")
-				print("*****************************************************************************")
-				print("*****************************************************************************")
-
-
-			print("Loop number = ",number)
-			print("Zero Position = ",zero_loc)
+	
 			if check_position(sudokuBoard,zero_loc, number) == 1:
-				print("We are in the check position")
 				place(sudokuBoard,zero_loc,number)
-				print_board(sudokuBoard)
-				print(zero_loc)
+				
 			#else:
 				if solve(sudokuBoard,zero_loc) == True:
 					return True
 			
 			place(sudokuBoard,zero_loc,0) 
-			print("Replacing Zero")
+			#print("Replacing Zero")
 			#print_board(sudokuBoard)
 
 		return False
@@ -200,18 +189,14 @@ def solve(sudokuBoard, zero_locations):
 
 
 def main():
-	#print_board(sudokuBoard)
-	find_zero_locations(sudokuBoard)
-	#reset_zeros(sudokuBoard)
+
 
 	print_board(sudokuBoard)
-	#place(sudokuBoard,[1,1], 100)
-	#check_position(sudokuBoard,[7,2],8)
+	
 	solve(sudokuBoard,zero_locations)
-	#print_board(sudokuBoard)
-	#print(zero_loc)
-	#print_board(sudokuBoard)
-	#check_position()
+	print("\n")
+	print_board(sudokuBoard)
+	
 
 
 main()

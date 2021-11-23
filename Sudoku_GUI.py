@@ -42,6 +42,9 @@ class Grid:
 
 
 	def draw_board(self, win):
+		#Modification
+		#gap_distance = (self.width - 100) / 9
+		#Original
 		gap_distance = self.width / 9
 		for ii in range(self.rows + 1):
 			if ii % 3 == 0 and ii != 0:
@@ -49,9 +52,13 @@ class Grid:
 			else: 
 				thickness =  1
 
-			pygame.draw.line(win, (0,0,0), (0, ii*gap_distance), (self.width, ii *gap_distance), thickness)
-			pygame.draw.line(win, (0,0,0), (ii * gap_distance, 0), (ii* gap_distance, self.height), thickness)
+			#Modification to give edges and make it look cleaner
+			pygame.draw.line(win, (0,0,0), (50, ii*gap_distance), (self.width -50, ii *gap_distance), thickness)
+			#pygame.draw.line(win, (0,0,0), (ii * gap_distance + 50 , 50), (ii* gap_distance +50, self.height + 50), thickness)
 			
+			#Original to the size of the board
+			#pygame.draw.line(win, (0,0,0), (0, ii*gap_distance), (self.width, ii *gap_distance), thickness)
+			#pygame.draw.line(win, (0,0,0), (ii * gap_distance, 0), (ii* gap_distance, self.height), thickness)
 	   		#pygame.draw.line(win, (0, 0, 0), (i * gap, 0), (i * gap, self.height), thick)
 
 
@@ -102,11 +109,23 @@ def main():
 	win.fill((100,100,100))
 	#win.blit(text, (540 - 160, 560))
 	pygame.display.set_caption("Jon's Sudoku GUI")
-	sudokuBoard = Grid(9,9,720,720)
+	sudokuBoard = Grid(9,9,620,620)
 	#print("Before Loop")
 	while 1:
-		sudokuBoard.draw_board(win)
-		pygame.display.update()
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT: sys.exit()
+			sudokuBoard.draw_board(win)
+			pygame.display.update()
+
+			position = pygame.mouse.get_pos()
+			#clicked = pygame.
+
+
+
+
+
+
+
 	#	print("In loop")
 
 main()

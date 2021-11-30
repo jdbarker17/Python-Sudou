@@ -6,10 +6,10 @@ pygame.init()
 size = width, height = 800, 600
 speed = [1, 1]
 black = 0, 0, 0
-
-screen  = pygame.display.set_mode(size)
-ball = pygame.image.load("intro_ball.gif")
-ballrect = ball.get_rect()
+offset = 65
+#screen  = pygame.display.set_mode(size)
+#ball = pygame.image.load("intro_ball.gif")
+#ballrect = ball.get_rect()
 #pygame.mouse.set_visible(True)
 
 class Grid: 
@@ -28,8 +28,8 @@ class Grid:
 
 	def __init__(self, rows,columns,width,height):
 		self.rows = rows
-		self.colums = columns
-		#self.cubes = [[Cube(self.board[i][j], i, j, width, height) for j in range(columns)] for i in range(rows)] 
+		self.columns = columns
+		self.cubes = [[Cube(self.sudokuBoard[i][j], i, j, width, height) for j in range(columns)] for i in range(rows)] 
 		self.width = width
 		self.height = height
 		self.model = None
@@ -47,19 +47,58 @@ class Grid:
 		#Original
 		gap_distance = self.width / 9
 		for ii in range(self.rows + 1):
-			if ii % 3 == 0 and ii != 0:
+			if ii % 3 == 0:
 				thickness = 4
 			else: 
 				thickness =  1
 
 			#Modification to give edges and make it look cleaner
-			pygame.draw.line(win, (0,0,0), (50, ii*gap_distance), (self.width -50, ii *gap_distance), thickness)
-			#pygame.draw.line(win, (0,0,0), (ii * gap_distance + 50 , 50), (ii* gap_distance +50, self.height + 50), thickness)
-			
+			pygame.draw.line(win, (0,0,0), (offset, ii*gap_distance+offset), (self.width  + offset, ii *gap_distance + offset), thickness)
+			pygame.draw.line(win, (0,0,0), (ii * gap_distance + offset , offset), (ii* gap_distance + offset, self.height + offset), thickness)
+		
+
+		for i in range(self.rows):
+			for j in range(self.columns):
+				self.cubes[i][j].draw(win)
 			#Original to the size of the board
 			#pygame.draw.line(win, (0,0,0), (0, ii*gap_distance), (self.width, ii *gap_distance), thickness)
 			#pygame.draw.line(win, (0,0,0), (ii * gap_distance, 0), (ii* gap_distance, self.height), thickness)
 	   		#pygame.draw.line(win, (0, 0, 0), (i * gap, 0), (i * gap, self.height), thick)
+	   		#Apparently this is where the cubes are drawn?
+
+	   	#for i in range(self.rows):
+	   	#	for j in range(self.columns):
+	   	#		self.cubes[i][j].draw(win)
+	
+	def get_square(self, position):
+	   	#print(position)
+	   	gap_distance = self.width/9
+
+	   	#Returns the indexes of the squares
+	   	if position[0]  < self.width + offset and position[1] < self.height + offset:
+	   		x = (position[0] - offset) // gap_distance
+	   		y = (position[1] - offset) // gap_distance
+	   		
+	   		if x >= 0 and y >= 0:
+	   			#print (x,y)
+	   			return (x,y)
+
+	   	
+
+	def select(self, column, row):
+		for i in range(self.rows):
+			for j in range(self.columns):
+				self.cubes[i][j].selected = False
+
+		#print("row = ", row)
+		#print("Column = ", column)
+		xrow = int(row)
+		ycol = int(column)
+		if xrow >=0 and ycol >= 0 :
+			self.cubes[xrow][ycol].selected = True
+			self.selected = (xrow, ycol)
+		#self.cubes[row][column].selected = True
+	   	#self.selected = (row,column)
 
 
 
@@ -80,49 +119,73 @@ class Cube:
 		fnt = pygame.font.SysFont("comicsans", 40)
 
 		gap = self.width/9
-		x = self.column * gap
-		y = self.roy * gap 
+		x = self.column * gap + 65
+		y = self.row * gap + 65
 
 		if self.temp != 0 and self.value ==0:
 			text = fnt.render(str(self.temp),1,(128,128,128))
 			win.blit(text, (x+5), (y+5))
 		elif not(self.value == 0):
 			text = fnt.render(str(self.value),1,(0,0,0))
-			win.blit(text, (x + (gap/2 - text.get_width()/2, y + (gap/2 - text.get_height()/2))))
+			win.blit(text, (x + (gap/2 - text.get_width()/2), y + (gap/2 - text.get_height()/2)))
 
 		if self.selected:
-			pygame.draw.rect(win, (255,0,0), (x,y,gap,gap),3)
+			rect = pygame.draw.rect(win, (255,0,0), (x,y,gap,gap),width = 3)
+			#rect.fill((255,0,0))
+			#win.fill((0,0,0))
 
-	def redraw_window(win,board,time,strikes):
-		win.fill((255,255,255))
-		win.blit(text, (540 - 160, 560))
-		board.draw(win)
+class Button:
 
-		
+    def __init__(self, pushed, xpos,ypos, width, height):
+        self.pushed = False
+        self.xpos = xpos
+        self.ypos = ypos
+        self.width = width
+        self.height = height
+
+    def press_button(self):
+        self.pushed = True
+
+    def print_button(self,win):
+   		pygame.draw.rect(win, (57,115,115),(self.xpos, self.ypos, self.width, self.height), width = 4)
+
+
+
+def redraw_window(win,board,time,strikes):
+		win.fill((200,200,200))
+		#win.blit(text, (540 - 160, 560))
+		#board.draw(win)	
+
+
 			
 
 
 
 def main():
 	#print()
-	win = pygame.display.set_mode((720,800))
-	win.fill((100,100,100))
+	win = pygame.display.set_mode((630,700))
+	win.fill((200,200,200))
 	#win.blit(text, (540 - 160, 560))
 	pygame.display.set_caption("Jon's Sudoku GUI")
-	sudokuBoard = Grid(9,9,620,620)
+	sudokuBoard = Grid(9,9,500,500)
 	#print("Before Loop")
+	solve_button = Button(False,400,600,165,50)
 	while 1:
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT: sys.exit()
 			sudokuBoard.draw_board(win)
 			pygame.display.update()
+			if event.type == pygame.MOUSEBUTTONDOWN:
+				position = pygame.mouse.get_pos()
+				square = sudokuBoard.get_square(position)
+				if square != None:
+					sudokuBoard.select(square[0],square[1])
 
-			position = pygame.mouse.get_pos()
-			#clicked = pygame.
-
-
-
-
+			#pygame.draw.rect(win, (255,0,0),(600, 600, 30, 30), width = 2)
+			#print_button(solve_button,win, 550, 600)
+			redraw_window(win,1,1,1)
+			#pygame.draw.rect(win, (255,0,0),(600, 600, 30, 30), width = 2)
+			solve_button.print_button(win)
 
 
 
